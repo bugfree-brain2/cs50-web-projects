@@ -1,0 +1,16 @@
+{% extends "encyclopedia/layout.html" %}
+{% block title %}
+New page
+{% endblock %}
+
+{% block body %}
+{% if error_message %}
+        {{error_message}}
+    {% endif %}
+<form class="create mt-4" action= "{% url 'create-page' %}" method="post">
+    {% csrf_token %}
+    <input  class="form-control mb-3 w-25" type="text" name="title" required>
+    <textarea  class="form-control mb-3 " rows="5" cols="8" placeholder="Write your content here in markdown" name="content" required "></textarea>
+    <button  type="submit" class="btn btn-primary" >Save</button>
+</form>
+{% endblock %}

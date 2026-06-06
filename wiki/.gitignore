@@ -1,0 +1,27 @@
+requirments.txt
+myenv
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Django
+*.sqlite3
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# VS Code / editor
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

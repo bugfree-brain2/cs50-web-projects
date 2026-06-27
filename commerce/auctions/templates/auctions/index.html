@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    {% for auction in auction %}
+<a href="{% url 'ind-page' auction.id %}" class="card text-decoration-none text-dark">
+  <div class="card-body">
+    <img src="{{auction.image}}" alt="product image" class="img-fluid rounded" style="height: 200px; width:400px ; object-fit: cover;">
+    <h5 class="card-title">{{ auction.title }}</h5>
+    <p class="card-text text-muted">{{ auction.description }}</p>
+    <p class="card-text fw-bold">{{ auction.start_bid }}$</p>
+    {% if not auction.active and user.is_authenticated and auction.auction_winner == user %}
+      <h1 style="color: red;">congratulations! you won the auction</h1>
+    {% endif %}
+  </div>
+</a>
+{% endfor %}
+{% endblock %}

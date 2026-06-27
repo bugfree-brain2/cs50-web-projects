@@ -1,0 +1,8 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+{% for cat in catagories%}
+<div class="d-flex flex-column justify-content-start">
+    <a href="{% url 'catagory_list' cat %}" class="btn btn-outline-secondary mb-1 mx-3" style="height: 40px; width: 100px;">{{cat}}</a>
+</div>
+{% endfor %}
+{% endblock %}

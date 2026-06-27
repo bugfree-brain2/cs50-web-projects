@@ -1,0 +1,15 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+{% for auction in watchlists %}
+<a href="{% url 'ind-page' auction.id %}" class="card text-decoration-none text-dark">
+  <div class="card-body">
+    <img src="{{auction.image}}" alt="product-image">
+    <h5 class="card-title">{{ auction.title }}</h5>
+    <p class="card-text text-muted">{{ auction.description }}</p>
+    <p class="card-text fw-bold">{{ auction.start_bid }}$</p>
+  </div>
+</a>
+{% empty %}
+<p>you dont have any watchlist yet</p>
+{% endfor %}
+{% endblock %}

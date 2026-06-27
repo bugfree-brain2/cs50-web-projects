@@ -1,0 +1,86 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+<div class="d-flex flex-column">
+<img src="{{auction.image}}" alt="product image" class="img-fluid rounded" style="height: 200px; width:400px ; object-fit: cover;">
+<p>{{auction.start_bid}}</p>
+{% if auction.active %}
+<p>auction is active </p>
+{% endif %}
+{% if user.id != auction.owners.id %}
+{% if auction.active %}
+{% if user.is_authenticated %}
+<p>start bidding</p>
+{% if wrong_bid %}
+{{wrong_bid}}
+{% endif %}
+<form action="{% url 'ind-page' auction.id %}" method="post" class="d-flex gap-4">
+    {% csrf_token %}
+    <input type="number" placeholder="Enter your bid ammount" name="bid" >
+        <input type="submit" class="btn-primary" placeholder="Submit ammount">
+</form>
+{% endif %}
+{% endif %}
+{% endif %}
+{% if user.id == auction.owners.id %}
+    {% if auction.active%}
+    <form action="{% url 'ind-page' auction.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn-primary" value="end-auction" name="auctions_status" >
+    </form>
+    {% endif %} 
+{% endif %}
+{% if auction.active != True%}
+<p>The auction ended</p>
+{% endif %}
+{% if auction.active != True %}
+{% if user.id == auction_winner.id%}
+<h1 style="color: red;">congratulations! you won the auction</h1>
+{% endif %}
+{% endif %}
+{% if user.is_authenticated %}
+{% if user.id != auction.owners.id%}
+{% if auction.id not in watchlists %}
+<form action="{% url 'ind-page' auction.id %}" method="post">
+     {% csrf_token %}
+    <input type="submit" value="add to watchlist" class="btn btn-outline-primary m-2" name="watchlist-button">
+</form>
+{% endif %}
+{% endif %}
+{% endif %}
+{% if auction.id in watchlists %}
+<form action="{% url 'ind-page' auction.id %}" method="post">
+     {% csrf_token %}
+    <input type="submit" value="Delete from te watchlist" class="btn btn-danger" name="watchlist-button-delete">
+</form>
+{% endif %}
+</div>
+{% if user.is_authenticated %}
+<div class="d-flex flex-column card" style="height: 60vh; width: 100%;">
+  <div class="overflow-auto flex-grow-1 p-2">
+    {% for comment in comments %}
+    <div class="card mb-2">
+      <div class="card-body py-2">
+        {% if auction.owners.username == comment.user.username %}
+        <span class="badge bg-danger mb-1">Admin</span>
+        {% endif %}
+        <h6 class="mb-1">{{ comment.user.username }}</h6>
+        <p class="mb-0 text-muted">{{ comment.comment }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="card-footer">
+    <form action="{% url 'ind-page' auction.id %}" class="d-flex gap-2" method="post">
+      {% csrf_token %}
+      <input type="text" class="form-control" placeholder="Enter your comment" name="comment">
+      <input type="submit" class="btn btn-primary" value="comment-input" name="comment-submit">
+    </form>
+  </div>
+</div>
+
+{% endif %}
+{% if not user.is_authenticated %}
+<p>login to unlock more features</p>
+{% endif %}
+{% endblock %}
